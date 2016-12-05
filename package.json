@@ -2,7 +2,7 @@
   "name": "fluxchat",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://bunnychat.github.io/fluxchat/",
+  "homepage": "http://joelburton.github.io/bunnychat/",
   "devDependencies": {
     "enzyme": "^2.6.0",
     "gh-pages": "^0.12.0",
