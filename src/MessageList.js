@@ -6,7 +6,7 @@ import ThreadSearchBox from './ThreadSearchBox';
 class MessageList extends Component {
 
   handleDelete(id) {
-    store.dispatch({ type: "DELETE_MESSAGE", id: id });
+    store.dispatch({ type: "DELETE_MESSAGE", id: id, threadId: this.props.thread.id });
   }
 
   componentDidMount() {

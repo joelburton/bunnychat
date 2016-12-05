@@ -6,6 +6,7 @@ import './App.css';
 import store from './store';
 
 class App extends Component {
+
   componentDidMount() {
     store.subscribe(() => this.forceUpdate());
   }
@@ -13,17 +14,26 @@ class App extends Component {
   render() {
     console.log("render");
     const state = store.getState();
-    const threads= state.threads;
-    const thread = threads.find(t => t.id === state.currentThreadId);
+    const threads = state.threads;
+    const threadId = this.props.params.threadId;
+    const thread = threads.find(t => !threadId || (t.id === threadId));
     return (
       <div>
-        <ThreadNav threads={threads} />
+        <ThreadNav threads={threads}/>
         <div className="well">
           <MessageList thread={thread}/>
           <MessageInput/>
         </div>
       </div>
     );
+  }
+}
+
+
+export function DefaultRoute(nextState, replace) {
+  if (nextState.params.threadId === undefined) {
+    const threads = store.getState().threads;
+    replace("/" + threads[0].id);
   }
 }
 

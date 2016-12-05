@@ -19,3 +19,7 @@ h1 {
 #root {
     padding-top: 20px;
 }
+
+a.active {
+    background-color: #f6f6f6 !important;
+}

@@ -6,7 +6,7 @@ class ThreadSearchBox extends Component {
   handleChange(e) {
     store.dispatch({
       type: 'CHANGE_THREAD_SEARCH',
-      id: this.props.thread.id,
+      threadId: this.props.thread.id,
       text: e.target.value
     });
   }

@@ -18,15 +18,15 @@ describe('store', () => {
   });
 
   it('can add message', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope', threadId: "a"});
     const messages = store.getState().threads[0].messages;
     expect(messages.length).toBe(3);
     expect(messages[2].text).toBe("zope");
   });
 
   it('can add messages', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'pope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope', threadId: "a"});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'pope', threadId: "a"});
     const messages = store.getState().threads[0].messages;
     expect(messages.length).toBe(4);
     expect(messages[2].text).toBe("zope");
@@ -34,11 +34,11 @@ describe('store', () => {
   });
 
   it('can delete message', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'nope'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'pope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope', threadId: "a"});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'nope', threadId: "a"});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'pope', threadId: "a"});
     const id = store.getState().threads[0].messages[3].id;
-    store.dispatch({type: 'DELETE_MESSAGE', id: id});
+    store.dispatch({type: 'DELETE_MESSAGE', id: id, threadId: "a"});
     const messages = store.getState().threads[0].messages;
     expect(messages.length).toBe(4);
     expect(messages[2].text).toBe('zope');
@@ -49,13 +49,8 @@ describe('store', () => {
     const sub = jest.fn(() => {});
     expect(sub.mock.calls.length).toBe(0);
     store.subscribe(sub);
-    store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'hello', threadId: "a"});
     expect(sub.mock.calls.length).toBe(1);
   });
-
-  it('can change threads', () => {
-    store.dispatch({type: 'CHANGE_THREAD', id: 'b'});
-    expect(store.getState().currentThreadId).toBe('b');
-  })
 
 });

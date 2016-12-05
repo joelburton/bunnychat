@@ -21,7 +21,7 @@ describe("MessageInput", () => {
     const render = shallow(<MessageInput />);
     render.find("input").at(0).simulate("change", { target: { value: "hello" } });
     render.find("form").at(0).simulate("submit", { preventDefault: () => null });
-    expect(store.dispatch.mock.calls).toEqual([[{ "text": "hello", "type": "ADD_MESSAGE" }]]);
+    expect(store.dispatch.mock.calls).toEqual([[{ text: "hello", type: "ADD_MESSAGE", threadId: "a" }]]);
     expect(render.containsMatchingElement(<input value=""/>)).toBeTruthy();
   });
 });

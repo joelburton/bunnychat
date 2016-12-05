@@ -16,7 +16,7 @@ class MessageInput extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const text = this.state.msg;
-    store.dispatch({ type: "ADD_MESSAGE", text: text });
+    store.dispatch({ type: "ADD_MESSAGE", text: text, threadId: "a" });
     this.setState({msg: ""});
   }
 

@@ -5,30 +5,26 @@ function messageReducer(state, action) {
   if (action.type === 'ADD_MESSAGE') {
     const newMessage = { id: uuid.v4(), text: action.text, timestamp: Date.now() };
     const threads = state.threads.map(t =>
-      t.id === state.currentThreadId
+      t.id === action.threadId
         ? { ...t, messages: [...t.messages, newMessage] }
         : t);
-    return { currentThreadId: state.currentThreadId, threads };
+    return { ...state, threads };
   }
 
   if (action.type === 'DELETE_MESSAGE') {
     const threads = state.threads.map(t =>
-      t.id === state.currentThreadId
+      t.id === action.threadId
         ? { ...t, messages: t.messages.filter(m => m.id !== action.id) }
         : t);
-    return { currentThreadId: state.currentThreadId, threads: threads }
-  }
-
-  if (action.type === "CHANGE_THREAD") {
-    return {currentThreadId: action.id, threads: state.threads};
+    return { ...state, threads }
   }
 
   if (action.type === "CHANGE_THREAD_SEARCH") {
     const threads = state.threads.map(t =>
-      t.id === action.id
+      t.id === action.threadId
       ? { ...t, searchText: action.text}
       : t);
-    return {currentThreadId: action.id, threads: threads };
+    return { ...state, threads };
   }
 
   return state;
@@ -57,7 +53,7 @@ const threads = [
   { id: "c", title: "Cherry", messages: cInitialMessages, searchText: "" },
 ];
 
-const initialState = { threads: threads, currentThreadId: "a" };
+const initialState = { threads: threads };
 
 const store = createStore(messageReducer, initialState);
 

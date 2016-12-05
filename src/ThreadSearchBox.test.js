@@ -33,6 +33,6 @@ describe("ThreadSearchBox", () => {
   it('can search', () => {
     const render = shallow(<ThreadSearchBox thread={thread} />);
     render.simulate("change", { target: { value: "hello" } });
-    expect(store.dispatch.mock.calls).toEqual([[{ text: "hello", type: "CHANGE_THREAD_SEARCH", id: "a" }]]);
+    expect(store.dispatch.mock.calls).toEqual([[{ text: "hello", type: "CHANGE_THREAD_SEARCH", threadId: "a" }]]);
   });
 });

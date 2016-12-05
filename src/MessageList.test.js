@@ -6,8 +6,8 @@ import store from './store';
 jest.mock("./store");
 
 const messages = [
-  { id: "a", text: "hello", timestamp: 100 },
-  { id: "b", text: "there", timestamp: 200 },
+  { id: "aa", text: "hello", timestamp: 100 },
+  { id: "ab", text: "there", timestamp: 200 },
 ];
 
 const thread = { 'id': 'a', title: 'Apple', messages: messages, searchText: "" };
@@ -26,7 +26,7 @@ describe('MessageList', () => {
     const rendered = shallow(<MessageList thread={thread}/>);
     const there = rendered.find("li").at(1);
     there.simulate("click");
-    expect(store.dispatch.mock.calls).toEqual([[{ type: 'DELETE_MESSAGE', id: "b" }]]);
+    expect(store.dispatch.mock.calls).toEqual([[{ type: 'DELETE_MESSAGE', id: "ab", threadId: "a" }]]);
   });
 
   describe('Filtering', () => {
