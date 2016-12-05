@@ -1,10 +1,10 @@
-import { messageReducer, createStore, initialState } from './store';
+import { stateReducer, createStore, initialState } from './store';
 
 describe('store', () => {
   let store;
 
   beforeEach(() => {
-    store = createStore(messageReducer, initialState);
+    store = createStore(stateReducer);
   });
 
   it('gets initial state', () => {
