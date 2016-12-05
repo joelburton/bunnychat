@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
+import ThreadNav from './ThreadNav';
 import './App.css';
 import store from './store';
 
@@ -10,11 +11,17 @@ class App extends Component {
   }
 
   render() {
-    const messages = store.getState().messages;
+    console.log("render");
+    const state = store.getState();
+    const threads= state.threads;
+    const thread = threads.find(t => t.id === state.currentThreadId);
     return (
       <div>
-        <MessageList messages={messages}/>
-        <MessageInput/>
+        <ThreadNav threads={threads} />
+        <div className="well">
+          <MessageList thread={thread}/>
+          <MessageInput/>
+        </div>
       </div>
     );
   }

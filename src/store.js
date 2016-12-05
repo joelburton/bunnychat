@@ -1,16 +1,65 @@
-import createStore from './flux';
+import {createStore} from 'redux';
+import uuid from 'uuid';
 
 function messageReducer(state, action) {
-  if (action.type === "ADD_MESSAGE") {
-    return {messages: [...state.messages, action.text]};
-  } else if (action.type === "DELETE_MESSAGE") {
-    return {messages: [...state.messages.slice(0, action.index), ...state.messages.slice(action.index + 1)]};
-  } else {
-    return state;
+  if (action.type === 'ADD_MESSAGE') {
+    const newMessage = { id: uuid.v4(), text: action.text, timestamp: Date.now() };
+    const threads = state.threads.map(t =>
+      t.id === state.currentThreadId
+        ? { ...t, messages: [...t.messages, newMessage] }
+        : t);
+    return { currentThreadId: state.currentThreadId, threads };
   }
+
+  if (action.type === 'DELETE_MESSAGE') {
+    const threads = state.threads.map(t =>
+      t.id === state.currentThreadId
+        ? { ...t, messages: t.messages.filter(m => m.id !== action.id) }
+        : t);
+    return { currentThreadId: state.currentThreadId, threads: threads }
+  }
+
+  if (action.type === "CHANGE_THREAD") {
+    return {currentThreadId: action.id, threads: state.threads};
+  }
+
+  if (action.type === "CHANGE_THREAD_SEARCH") {
+    const threads = state.threads.map(t =>
+      t.id === action.id
+      ? { ...t, searchText: action.text}
+      : t);
+    return {currentThreadId: action.id, threads: threads };
+  }
+
+  return state;
 }
 
-const store = createStore(messageReducer, { messages: ["hey", "jude"] });
+const now = Date.now();
+
+const aInitialMessages = [
+  { id: "aa", text: "hello", timestamp: now-500000 },
+  { id: "ab", text: "there", timestamp: now-200000 },
+];
+
+const bInitialMessages = [
+  { id: "ba", text: "bhello", timestamp: now-500000 },
+  { id: "bb", text: "bthere", timestamp: now-100000 },
+];
+
+const cInitialMessages = [
+  { id: "ca", text: "chello", timestamp: now-50000000 },
+  { id: "cb", text: "cthere", timestamp: now-40000000 },
+];
+
+const threads = [
+  { id: "a", title: "Apple", messages: aInitialMessages, searchText: "" },
+  { id: "b", title: "Berry", messages: bInitialMessages, searchText: "" },
+  { id: "c", title: "Cherry", messages: cInitialMessages, searchText: "" },
+];
+
+const initialState = { threads: threads, currentThreadId: "a" };
+
+const store = createStore(messageReducer, initialState);
 
 export default store;
-export { messageReducer, createStore };
+export {messageReducer, createStore, initialState};

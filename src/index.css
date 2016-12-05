@@ -1,5 +1,21 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+@media (min-width: 1200px) {
+    .page-header {
+        text-align: right;
+        background: url(https://s-media-cache-ak0.pinimg.com/564x/1b/fa/49/1bfa490634df456a1ca82149c06445e6.jpg) no-repeat top left / 30%;
+    }
+}
+
+h1 {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+#root {
+    padding-top: 20px;
 }

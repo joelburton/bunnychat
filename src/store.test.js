@@ -1,39 +1,48 @@
-import { messageReducer, createStore } from './store';
+import { messageReducer, createStore, initialState } from './store';
 
 describe('store', () => {
   let store;
 
   beforeEach(() => {
-    store = createStore(messageReducer, {messages: []});
+    store = createStore(messageReducer, initialState);
   });
 
   it('gets initial state', () => {
-    expect(store.getState().messages).toEqual([]);
+    expect(store.getState().threads.length).toEqual(3);
   });
 
   it('is side-effect free', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
-    store.dispatch({type: 'BAD_MESSAGE', text: 'hello'});
-    expect(store.getState().messages).toEqual(['hello']);
+    store.dispatch({type: 'BAD_MESSAGE', text: 'nope, not a good type'});
+    const messages = store.getState().threads[0].messages;
+    expect(messages.length).toBe(2);
   });
 
-  it('can add msg', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
-    expect(store.getState().messages).toEqual(['hello']);
+  it('can add message', () => {
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
+    const messages = store.getState().threads[0].messages;
+    expect(messages.length).toBe(3);
+    expect(messages[2].text).toBe("zope");
   });
 
   it('can add messages', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'world'});
-    expect(store.getState().messages).toEqual(['hello', 'world']);
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'pope'});
+    const messages = store.getState().threads[0].messages;
+    expect(messages.length).toBe(4);
+    expect(messages[2].text).toBe("zope");
+    expect(messages[3].text).toBe("pope");
   });
 
   it('can delete message', () => {
-    store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'there'});
-    store.dispatch({type: 'ADD_MESSAGE', text: 'world'});
-    store.dispatch({type: 'DELETE_MESSAGE', index: 1});
-    expect(store.getState().messages).toEqual(['hello', 'world']);
+    store.dispatch({type: 'ADD_MESSAGE', text: 'zope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'nope'});
+    store.dispatch({type: 'ADD_MESSAGE', text: 'pope'});
+    const id = store.getState().threads[0].messages[3].id;
+    store.dispatch({type: 'DELETE_MESSAGE', id: id});
+    const messages = store.getState().threads[0].messages;
+    expect(messages.length).toBe(4);
+    expect(messages[2].text).toBe('zope');
+    expect(messages[3].text).toBe('pope');
   });
 
   it('calls subscribers', () => {
@@ -42,6 +51,11 @@ describe('store', () => {
     store.subscribe(sub);
     store.dispatch({type: 'ADD_MESSAGE', text: 'hello'});
     expect(sub.mock.calls.length).toBe(1);
+  });
+
+  it('can change threads', () => {
+    store.dispatch({type: 'CHANGE_THREAD', id: 'b'});
+    expect(store.getState().currentThreadId).toBe('b');
   })
 
 });
