@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import store from './store';
-import moment from 'moment';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import ThreadSearchBox from './ThreadSearchBox';
 
 class MessageList extends Component {
@@ -32,7 +32,7 @@ class MessageList extends Component {
           { messages.map(msg =>
             <li key={msg.id} className="list-group-item" onClick={e => this.handleDelete(msg.id)}>
               <b>{msg.text}</b>
-              <small className="text-muted pull-right">{moment(msg.timestamp).fromNow()}</small>
+              <small className="text-muted pull-right">{distanceInWordsToNow(msg.timestamp)}</small>
             </li>
           )}
         </ul>
