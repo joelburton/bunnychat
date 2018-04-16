@@ -1,39 +1,35 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
 import ThreadNav from './ThreadNav';
-import './App.css';
 import store from './store';
+import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log("huh?");
+  }
 
   componentDidMount() {
     store.subscribe(() => this.forceUpdate());
   }
 
   render() {
-    console.log("render");
+    console.log("render", this.props);
     const state = store.getState();
     const threads = state.threads;
-    const threadId = this.props.params.threadId;
+    const threadId = this.props.match.params.threadId;
     const thread = threads.find(t => !threadId || (t.id === threadId));
     return (
       <div>
-        <ThreadNav threads={threads}/>
+        <ThreadNav threads={threads} threadId={threadId} />
         <div className="well">
-          <MessageList thread={thread}/>
-          <MessageInput/>
+          <MessageList thread={thread} />
+          <MessageInput threadId={threadId} />
         </div>
       </div>
     );
-  }
-}
-
-
-export function DefaultRoute(nextState, replace) {
-  if (nextState.params.threadId === undefined) {
-    const threads = store.getState().threads;
-    replace("/" + threads[0].id);
   }
 }
 

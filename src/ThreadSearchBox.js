@@ -1,9 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import store from './store';
+import PropTypes from 'prop-types';
+
+/** Simple search box: records search text in store. */
 
 class ThreadSearchBox extends Component {
+  static propTypes = {
+    thread: PropTypes.object,
+  }
 
-  handleChange(e) {
+  handleChange = (e) => {
     store.dispatch({
       type: 'CHANGE_THREAD_SEARCH',
       threadId: this.props.thread.id,
@@ -12,9 +18,12 @@ class ThreadSearchBox extends Component {
   }
 
   render() {
-    const text = this.props.thread.searchText;
     return (
-      <input className="search-box" placeholder="Search..." value={text} onChange={e => this.handleChange(e)}/>
+      <input type="text"
+        className="search-box"
+        placeholder="Search..."
+        value={this.props.thread.searchText || ""}
+        onChange={this.handleChange} />
     );
   }
 }
