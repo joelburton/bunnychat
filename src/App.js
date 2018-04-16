@@ -23,7 +23,7 @@ class App extends Component {
     const thread = threads.find(t => !threadId || (t.id === threadId));
     return (
       <div>
-        <ThreadNav threads={threads} threadId={threadId} />
+        <ThreadNav threads={threads} />
         <div className="well">
           <MessageList thread={thread} />
           <MessageInput threadId={threadId} />
