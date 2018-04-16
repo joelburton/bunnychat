@@ -12,7 +12,9 @@ import './index.css';
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route path="/:threadId" component={App} />
+      {store.getState().threads.map(t => (
+        <Route path={`/${t.id}`} render={() => <App thread={t} />} />
+      ))}
       <Redirect to={store.getState().threads[0].id} />
     </Switch>
   </Router>,
