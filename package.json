@@ -1,6 +1,6 @@
 {
-  "name": "fluxchat",
-  "version": "0.1.0",
+  "name": "bunnychat",
+  "version": "3.0.0",
   "private": true,
   "homepage": "http://joelburton.github.io/bunnychat/",
   "devDependencies": {
